@@ -1,0 +1,24 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.8.0.min.js"></script>
+    <script type="text/javascript" src="oauth.js"></script>
+    <script type="text/javascript" src="onedrive-file-picker.js"></script>
+    <link rel="stylesheet" type="text/css" href="onedrive-file-picker.min.css">
+  </head>
+  <body>
+    <input type="submit" onclick="openPicker()" value="Open Picker"/>
+    <script type="text/javascript">
+      function openPicker() {
+        getToken().then(function(token) {
+          return new OneDriveFilePicker({ 'accessToken': token }).select();
+        }).then(function(result) {
+          if (result.action === 'select') {
+            $('#result').html(JSON.stringify(result.item));
+          }
+        });
+      }
+    </script>
+    <div id="result"></div>
+    <span id="browser-sync-binding"></span>
+  </body>
+</html>
