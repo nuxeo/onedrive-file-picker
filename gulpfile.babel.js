@@ -3,6 +3,7 @@
 import gulp from 'gulp';
 import babel from 'gulp-babel';
 import browserify from 'browserify';
+import browserSync from 'browser-sync';
 import source from 'vinyl-source-stream';
 import eslint from 'gulp-eslint';
 import mocha from 'gulp-spawn-mocha';
@@ -21,7 +22,7 @@ gulp.task('lint', () => {
     .pipe(eslint.failAfterError());
 });
 
-gulp.task('build:browser', ['lint'], () => {
+gulp.task('build', ['lint'], () => {
   return browserify({
     entries: ['src/index.js'],
     standalone: 'OneDriveFilePicker',
@@ -31,8 +32,6 @@ gulp.task('build:browser', ['lint'], () => {
   .pipe(source('onedrive-file-picker.js'))
   .pipe(gulp.dest('dist'));
 });
-
-gulp.task('build', gulpSequence(['build:node', 'build:browser']));
 
 gulp.task('test:node', ['build:node'], () => {
   return gulp.src('test/**/*.spec.js')
@@ -55,4 +54,29 @@ gulp.task('prepublish', ['nsp', 'test']);
 
 gulp.task('nsp', (done) => {
   nsp({ package: __dirname + '/package.json' }, done);
+});
+
+gulp.task('demo', ['build'], function() {
+  browserSync({
+    port: 5000,
+    notify: false,
+    logPrefix: 'PSK',
+    snippetOptions: {
+      rule: {
+        match: '<span id="browser-sync-binding"></span>',
+        fn: function(snippet) {
+          return snippet;
+        }
+      }
+    },
+    https: true,
+    server: {
+      baseDir: ["demo", "dist"],
+      files: ["demo", "dist"],
+      //middleware: [historyApiFallback(), require('proxy-middleware')(proxyOptions)],
+      //routes: {
+      //  '/bower_components': 'bower_components'
+      //}
+    }
+  });
 });
