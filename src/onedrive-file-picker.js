@@ -26,7 +26,7 @@ class OneDriveFilePicker {
   }
 
   select() {
-    this._api.fetchRoot().then((res) => { console.log(res); });
+    this._api.fetchRootChildren().then((res) => { console.log(res); });
   }
 
 }

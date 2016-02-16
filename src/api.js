@@ -21,12 +21,12 @@ class Api {
     this._accessToken = options.accessToken;
   }
 
-  fetchRoot() {
-    return this._fetch('/drive/root');
+  fetchRootChildren() {
+    return this._fetch('/drive/root/children?expand=thumbnails');
   }
 
   fetchChildren(itemId) {
-    return this._fetch('/drive/item/' + itemId + '/children');
+    return this._fetch('/drive/item/' + itemId + '/children?expand=thumbnails');
   }
 
   _fetch(path) {
@@ -34,7 +34,7 @@ class Api {
       jquery.ajax({
         url: this._baseURL + path,
         type: 'GET',
-        beforeSend: (xhr) => {xhr.setRequestHeader('Authorization', 'bearer ' + this._accessToken);},
+        beforeSend: (xhr) => {xhr.setRequestHeader('Authorization', 'Bearer ' + this._accessToken);},
         success: (data) => { resolve(data); },
         error: (jqXHR, textStatus, errorThrown) => { reject(errorThrown); },
       });

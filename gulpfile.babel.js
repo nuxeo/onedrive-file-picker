@@ -79,4 +79,7 @@ gulp.task('demo', ['build'], function() {
       //}
     }
   });
+
+  gulp.watch(['demo/*'], browserSync.reload);
+  gulp.watch(['src/**/*.js'], ['build']);
 });
