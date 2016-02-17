@@ -9,10 +9,15 @@
     <script type="text/javascript">
       function openPicker() {
         getToken().then(function(token) {
-          new OneDriveFilePicker({ 'accessToken': token }).select();
+          return new OneDriveFilePicker({ 'accessToken': token }).select();
+        }).then(function(result) {
+          if (result.action === 'itemSelected') {
+            $('#result').html(JSON.stringify(result.item));
+          }
         });
       }
     </script>
+    <div id="result"></div>
     <span id="browser-sync-binding"></span>
   </body>
 </html>

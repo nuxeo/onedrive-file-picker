@@ -11,7 +11,7 @@ import Promise from './deps/promise';
 class Api {
 
   /**
-   * Creates a new OneDriveFilePicker instance.
+   * Creates a new Api instance.
    * @param {object} options - The configuration options.
    * @param {string} [options.baseURL=https://api.onedrive.com/v1.0] - Base URL of OneDrive REST APIs.
    * @param {string} [options.accessToken=YOUR_ACCESS_TOKEN] - The access token to use.
@@ -26,7 +26,7 @@ class Api {
   }
 
   fetchChildren(itemId) {
-    return this._fetch('/drive/item/' + itemId + '/children?expand=thumbnails');
+    return this._fetch('/drive/items/' + itemId + '/children?expand=thumbnails');
   }
 
   _fetch(path) {
