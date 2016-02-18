@@ -35,19 +35,31 @@ class OneDriveFilePicker {
     return this._api.fetchRootChildren().then((res) => {
       this._buildPicker(res.value).appendTo(jquery('body'));
       this._applyHandler();
-      return new this.Promise((resolve) => {
-        jquery(JQUERY_PICKER_SELECTOR + ' input.select').click(() => {
-          const activeItem = jquery(JQUERY_PICKER_SELECTOR + ' .item.active');
+      const select = new this.Promise((resolve) => {
+        jquery(JQUERY_PICKER_SELECTOR + ' input.onedrive-file-picker-select').click(() => {
+          const activeItem = jquery(JQUERY_PICKER_SELECTOR + ' .onedrive-file-picker-item.onedrive-file-picker-active');
           if (activeItem.data('folder') === 'true') {
             this._api.fetchChildren(activeItem.data('item').id).then((children) => {
               this._replaceItems(children.value);
             });
           } else {
-            resolve({ action: 'itemSelected', item: activeItem.data('item') });
+            this.close();
+            resolve({ action: 'select', item: activeItem.data('item') });
           }
         });
       });
+      const close = new this.Promise((resolve) => {
+        jquery(JQUERY_PICKER_SELECTOR + ' span.onedrive-file-picker-close').click(() => {
+          this.close();
+          resolve({ action: 'close' });
+        });
+      });
+      return this.Promise.race(select, close);
     });
+  }
+
+  close() {
+    jquery(JQUERY_PICKER_SELECTOR).remove();
   }
 
   _buildPicker(items) {
@@ -67,18 +79,20 @@ class OneDriveFilePicker {
    * Applies handler on all items.
    */
   _applyHandler() {
-    const items = jquery(JQUERY_PICKER_SELECTOR + ' .item');
+    const items = jquery(JQUERY_PICKER_SELECTOR + ' .onedrive-file-picker-item');
     // Navigation
     items.dblclick((event) => {
-      const itemId = jquery(event.currentTarget).data('item').id;
-      this._api.fetchChildren(itemId).then((res) => {
-        this._replaceItems(res.value);
-      });
+      const item = jquery(event.currentTarget);
+      if (item.data('folder') === 'true') {
+        this._api.fetchChildren(item.data('item').id).then((res) => {
+          this._replaceItems(res.value);
+        });
+      }
     });
     // Selection
     items.click((event) => {
-      items.removeClass('active');
-      jquery(event.currentTarget).addClass('active');
+      items.removeClass('onedrive-file-picker-active');
+      jquery(event.currentTarget).addClass('onedrive-file-picker-active');
     });
   }
 

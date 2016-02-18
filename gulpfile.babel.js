@@ -32,7 +32,7 @@ gulp.task('default', ['dist'], () => {
 });
 
 gulp.task('lint', () => {
-  return gulp.src(['src/**', '!node_modules/**'])
+  return gulp.src(['src/**/*.js', '!node_modules/**'])
     .pipe(eslint())
     .pipe(eslint.format())
     .pipe(eslint.failAfterError());
@@ -101,5 +101,5 @@ gulp.task('demo', ['build'], function() {
   });
 
   gulp.watch(['demo/*'], browserSync.reload);
-  gulp.watch(['src/**/*.js'], ['build']);
+  gulp.watch(['src/**'], ['build', browserSync.reload]);
 });
