@@ -36,8 +36,8 @@ class OneDriveFilePicker {
       this._buildPicker(res.value).appendTo(jquery('body'));
       this._applyHandler();
       const select = new this.Promise((resolve) => {
-        jquery(JQUERY_PICKER_SELECTOR + ' input.onedrive-file-picker-select').click(() => {
-          const activeItem = jquery(JQUERY_PICKER_SELECTOR + ' .onedrive-file-picker-item.onedrive-file-picker-active');
+        jquery(JQUERY_PICKER_SELECTOR + ' input.odfp-select').click(() => {
+          const activeItem = jquery(JQUERY_PICKER_SELECTOR + ' .odfp-item.odfp-active');
           if (activeItem.data('folder') === 'true') {
             this._api.fetchChildren(activeItem.data('item').id).then((children) => {
               this._replaceItems(children.value);
@@ -49,7 +49,7 @@ class OneDriveFilePicker {
         });
       });
       const close = new this.Promise((resolve) => {
-        jquery(JQUERY_PICKER_SELECTOR + ' span.onedrive-file-picker-close').click(() => {
+        jquery(JQUERY_PICKER_SELECTOR + ' span.odfp-close').click(() => {
           this.close();
           resolve({ action: 'close' });
         });
@@ -79,7 +79,7 @@ class OneDriveFilePicker {
    * Applies handler on all items.
    */
   _applyHandler() {
-    const items = jquery(JQUERY_PICKER_SELECTOR + ' .onedrive-file-picker-item');
+    const items = jquery(JQUERY_PICKER_SELECTOR + ' .odfp-item');
     // Navigation
     items.dblclick((event) => {
       const item = jquery(event.currentTarget);
@@ -91,8 +91,8 @@ class OneDriveFilePicker {
     });
     // Selection
     items.click((event) => {
-      items.removeClass('onedrive-file-picker-active');
-      jquery(event.currentTarget).addClass('onedrive-file-picker-active');
+      items.removeClass('odfp-active');
+      jquery(event.currentTarget).addClass('odfp-active');
     });
   }
 

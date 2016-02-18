@@ -2,14 +2,14 @@
 
 const picker =
 `<div class="onedrive-file-picker">
-  <div class="onedrive-file-picker-body">
-    <div class="onedrive-file-picker-header">
+  <div class="odfp-body">
+    <div class="odfp-header">
       <span>Select a file</span>
-      <span class="onedrive-file-picker-close">Close</span>
+      <span class="odfp-close">Close</span>
     </div>
-    <div class="onedrive-file-picker-content" onedrive-insert-rows></div>
-    <div class="onedrive-file-picker-footer">
-      <input class="onedrive-file-picker-select" type="submit" value="Select" />
+    <div class="odfp-content" onedrive-insert-rows></div>
+    <div class="odfp-footer">
+      <input class="odfp-select" type="submit" value="Select" />
     </div>
   </div>
 </div>`;

@@ -20,12 +20,12 @@ class ItemView {
 
   build() {
     const _item = jquery(item);
-    _item.addClass('onedrive-file-picker-item');
+    _item.addClass('odfp-item');
     _item.data('item', this._itemData);
-    _item.find('.onedrive-file-picker-name').append(this._itemData.name);
+    _item.find('.odfp-name').append(this._itemData.name);
     const thumbnails = this._itemData.thumbnails;
     if (thumbnails.length > 0) {
-      _item.find('.onedrive-file-picker-thumbnail img').attr('src', thumbnails[0].medium.url);
+      _item.find('.odfp-thumbnail img').attr('src', thumbnails[0].medium.url);
     }
     if (this._itemData.folder) {
       _item.data('folder', 'true');

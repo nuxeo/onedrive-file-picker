@@ -10,14 +10,14 @@
   background-color: rgba(0,0,0,0.4);
 }
 
-.onedrive-file-picker-body {
+.odfp-body {
   background-color: #fefefe;
   margin: 15% auto;
   border: 1px solid #888;
   width: 80%;
 }
 
-.onedrive-file-picker-header {
+.odfp-header {
   background-color: #f8f9fb;
   color: 1px solid #e6e9ef;
   font-size: 0.9em;
@@ -26,50 +26,50 @@
   padding: 1em 1.7em;
 }
 
-.onedrive-file-picker-close {
+.odfp-close {
   color: #9a9a9a;
   float: right;
   font-size: 0.9em;
   cursor: pointer;
 }
-.onedrive-file-picker-close:hover,
-.onedrive-file-picker-close:focus {
+.odfp-close:hover,
+.odfp-close:focus {
   color: black;
   text-decoration: none;
 }
 
-.onedrive-file-picker-content {
+.odfp-content {
   padding: 1em;
   overflow: auto;
   height: 50%;
   max-height: 400px;
 }
 
-.onedrive-file-picker-row {
+.odfp-row {
 
 }
 
-.onedrive-file-picker-row .onedrive-file-picker-item {
+.odfp-row .odfp-item {
   display: inline-block;
   width: 19%;
   margin: auto 0.5%;
 }
 
-.onedrive-file-picker-row .onedrive-file-picker-item .onedrive-file-picker-thumbnail {
+.odfp-row .odfp-item .odfp-thumbnail {
 
 }
 
-.onedrive-file-picker-row .onedrive-file-picker-item .onedrive-file-picker-thumbnail img {
+.odfp-row .odfp-item .odfp-thumbnail img {
   width: 100%;
   max-width: 176px;
   max-height: 176px;
 }
 
-.onedrive-file-picker-row .onedrive-file-picker-item .onedrive-file-picker-name {
+.odfp-row .odfp-item .odfp-name {
   text-align: center;
 }
 
-.onedrive-file-picker-footer {
+.odfp-footer {
   background-color: #f3f6f9;
   border-top: 1px solid #e6e9ef;
   font-size: 1em;
