@@ -44,8 +44,9 @@ class OneDriveFilePicker {
               this._replaceItems(children.value);
             });
           } else {
+            const activeItemData = activeItem.data('item');
             this.close();
-            resolve({ action: 'select', item: activeItem.data('item') });
+            resolve({ action: 'select', item: activeItemData });
           }
         });
       });
@@ -55,7 +56,7 @@ class OneDriveFilePicker {
           resolve({ action: 'close' });
         });
       });
-      return this.Promise.race(select, close);
+      return this.Promise.race([select, close]);
     });
   }
 
