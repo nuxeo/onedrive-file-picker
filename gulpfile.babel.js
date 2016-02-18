@@ -8,7 +8,6 @@ import browserSync from 'browser-sync';
 import concat from 'gulp-concat';
 import cssnano from 'gulp-cssnano';
 import source from 'vinyl-source-stream';
-import sourcemaps from 'gulp-sourcemaps';
 import eslint from 'gulp-eslint';
 import mocha from 'gulp-spawn-mocha';
 import babelify from 'babelify';
@@ -57,24 +56,7 @@ gulp.task('build', ['lint', 'styles'], () => {
   .pipe(gulp.dest('dist'));
 });
 
-gulp.task('test:node', ['build:node'], () => {
-  return gulp.src('test/**/*.spec.js')
-    .pipe(mocha({
-      require: ['./test/helpers/setup.js', './test/helpers/setup-node.js'],
-      compilers: 'js:babel-core/register',
-    }));
-});
-
-gulp.task('test:browser', ['build:node', 'build:browser'], (done) => {
-  new Server({
-    configFile: __dirname + '/karma.conf.js',
-    singleRun: true,
-  }, (exitStatus) => done(exitStatus ? 'Browser tests failed' : undefined)).start();
-});
-
-gulp.task('test', gulpSequence('test:node', 'test:browser'));
-
-gulp.task('prepublish', ['nsp', 'test']);
+gulp.task('install', ['nsp', 'build']);
 
 gulp.task('nsp', (done) => {
   nsp({ package: __dirname + '/package.json' }, done);
