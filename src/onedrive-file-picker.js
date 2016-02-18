@@ -27,6 +27,7 @@ class OneDriveFilePicker {
   constructor(opts = {}) {
     const options = extend(true, {}, DEFAULT_OPTS, opts);
     this._api = new Api({ baseURL: options.baseURL, accessToken: options.accessToken });
+    this._picker = new PickerView();
     this.Promise = OneDriveFilePicker.Promise || Promise;
   }
 
@@ -63,16 +64,15 @@ class OneDriveFilePicker {
   }
 
   _buildPicker(items) {
-    const picker = new PickerView();
-    const nbItem = items.length;
+    this._picker.clearRows();
     let row;
-    for (let i = 0; i < nbItem; i++) {
+    for (let i = 0; i < items.length; i++) {
       if (i % 5 === 0) {
-        row = picker.addRow();
+        row = this._picker.addRow();
       }
       row.addCol(items[i]);
     }
-    return picker.build().attr('id', ONEDRIVE_FILE_PICKER_ID);
+    return this._picker.build().attr('id', ONEDRIVE_FILE_PICKER_ID);
   }
 
   /**
@@ -84,7 +84,9 @@ class OneDriveFilePicker {
     items.dblclick((event) => {
       const item = jquery(event.currentTarget);
       if (item.data('folder') === 'true') {
-        this._api.fetchChildren(item.data('item').id).then((res) => {
+        const itemData = item.data('item');
+        this._api.fetchChildren(itemData.id).then((res) => {
+          this._picker.addItemToBreadcrumb(itemData);
           this._replaceItems(res.value);
         });
       }
@@ -94,14 +96,32 @@ class OneDriveFilePicker {
       items.removeClass('odfp-active');
       jquery(event.currentTarget).addClass('odfp-active');
     });
+    // Breadcrumb
+    jquery(JQUERY_PICKER_SELECTOR + ' .odfp-breadcrumb .odfp-breadcrumb-item').click((event) => {
+      const item = jquery(event.currentTarget);
+      if (!item.hasClass('odfp-active')) {
+        const itemData = item.data('item');
+        const itemId = itemData.id;
+        let promise;
+        if (itemId === 'ROOT') {
+          promise = this._api.fetchRootChildren();
+        } else {
+          promise = this._api.fetchChildren(itemId);
+        }
+        promise.then((res) => {
+          this._picker.setBreadcrumbTo(itemId);
+          this._replaceItems(res.value);
+        });
+      }
+    });
   }
 
   /**
    * Replaces items in the dom and applies the handlers.
    */
   _replaceItems(items) {
-    const rows = this._buildPicker(items).find('[onedrive-insert-rows]');
-    jquery(JQUERY_PICKER_SELECTOR + ' [onedrive-insert-rows]').replaceWith(rows);
+    const rows = this._buildPicker(items).find('.odfp-content');
+    jquery(JQUERY_PICKER_SELECTOR + ' .odfp-content').replaceWith(rows);
     this._applyHandler();
   }
 
