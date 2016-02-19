@@ -104,8 +104,10 @@ class OneDriveFilePicker {
         const itemData = item.data('item');
         const itemId = itemData.id;
         let promise;
-        if (itemId === 'ROOT') {
+        if (itemData.root) {
           promise = this._api.fetchRootChildren();
+        } else if (itemData.search) {
+          promise = this._api.search(itemData.search);
         } else {
           promise = this._api.fetchChildren(itemId);
         }
@@ -114,6 +116,23 @@ class OneDriveFilePicker {
           this._replaceItems(res.value);
         });
       }
+    });
+    // Search
+    const searchInputId = JQUERY_PICKER_SELECTOR + ' .odfp-search .odfp-search-input';
+    const submitInputId = JQUERY_PICKER_SELECTOR + ' .odfp-search .odfp-search-submit';
+    jquery(searchInputId).keypress((event) => {
+      if (event.which === 13) {
+        event.preventDefault();
+        jquery(submitInputId).click();
+      }
+    });
+    jquery(submitInputId).click(() => {
+      const search = jquery(searchInputId).val();
+      this._api.search(search).then((res) => {
+        this._picker.reinitBreadcrumb();
+        this._picker.addSearchToBreadcrumb(search);
+        this._replaceItems(res.value);
+      });
     });
   }
 

@@ -29,6 +29,10 @@ class Api {
     return this._fetch('/drive/items/' + itemId + '/children?expand=thumbnails');
   }
 
+  search(search) {
+    return this._fetch('/drive/root/view.search?expand=thumbnails&q=' + encodeURI(search));
+  }
+
   _fetch(path) {
     return new Promise((resolve, reject) => {
       jquery.ajax({

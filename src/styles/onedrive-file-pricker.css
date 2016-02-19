@@ -50,7 +50,7 @@
   margin-top: 0px;
   margin-bottom: 20px;
   list-style: none;
-  background-color: #f5f5f5;
+  background-color: #f8f9fb;
   border-radius: 4px;
 }
 
@@ -71,6 +71,14 @@
 .odfp-breadcrumb li.odfp-breadcrumb-item.odfp-active a {
   color: #777;
   cursor: default;
+}
+
+.odfp-search {
+  padding: 8px 15px;
+  margin-top: 0px;
+  margin-bottom: 20px;
+  background-color: #f8f9fb;
+  border-radius: 4px;
 }
 
 .odfp-row {

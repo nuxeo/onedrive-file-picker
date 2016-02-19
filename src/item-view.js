@@ -24,7 +24,7 @@ class ItemView {
     _item.data('item', this._itemData);
     _item.find('.odfp-name').append(this._itemData.name);
     const thumbnails = this._itemData.thumbnails;
-    if (thumbnails.length > 0) {
+    if (thumbnails && thumbnails.length > 0) {
       _item.find('.odfp-thumbnail img').attr('src', thumbnails[0].medium.url);
     }
     if (this._itemData.folder) {

@@ -46,11 +46,26 @@ class PickerView {
   }
 
   /**
+   * Adds a search item to the breadcrumb.
+   * @param {string} search - The search request.
+   */
+  addSearchToBreadcrumb(search) {
+    this._breadcrumb.addSearch(search);
+  }
+
+  /**
    * Sets the current directory to the item owning the input id.
    * @param {string} itemId - The item id to set as current directory.
    */
   setBreadcrumbTo(itemId) {
     this._breadcrumb.setCurrent(itemId);
+  }
+
+  /**
+   * Reinitialize the breadcrumb.
+   */
+  reinitBreadcrumb() {
+    this._breadcrumb.reinit();
   }
 
   /**

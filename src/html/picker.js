@@ -9,6 +9,10 @@ const picker =
     </div>
     <div class="odfp-content">
       <div onedrive-insert-breadcrumb></div>
+      <div class="odfp-search">
+        <input class="odfp-search-input" type="text" />
+        <input class="odfp-search-submit" type="submit" value="Search" />
+      </div>
       <div onedrive-insert-rows></div>
     </div>
     <div class="odfp-footer">
