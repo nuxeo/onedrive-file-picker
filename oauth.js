@@ -2,7 +2,7 @@ var appInfo = { clientId: '000000004417C781', scopes: 'onedrive.readonly wl.sign
 var tmpResolve = null;
 
 function getToken() {
-  ensureHttps();
+  //ensureHttps();
   return new Promise(function(resolve, error) {
     var token = getTokenFromCookie();
     if (token) {

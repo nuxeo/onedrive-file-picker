@@ -1191,6 +1191,11 @@ var Api = function () {
       return this._fetch('/drive/items/' + itemId + '/children?expand=thumbnails');
     }
   }, {
+    key: 'search',
+    value: function search(_search) {
+      return this._fetch('/drive/root/view.search?expand=thumbnails&q=' + encodeURI(_search));
+    }
+  }, {
     key: '_fetch',
     value: function _fetch(path) {
       var _this = this;
@@ -1313,6 +1318,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var ROOT_ID = 'ROOT';
+var SEARCH_ID = 'SEARCH';
+
 /**
  * The BreadcrumbView class used to build the view.
  *
@@ -1328,12 +1336,13 @@ var BreadcrumbView = function () {
   function BreadcrumbView() {
     _classCallCheck(this, BreadcrumbView);
 
-    this._items = [new _breadcrumbItemView2.default({ id: 'ROOT', name: 'Home' })];
+    this._items = [new _breadcrumbItemView2.default({ id: ROOT_ID, name: 'Home', root: true })];
   }
 
   /**
    * Add a new item to the breadcrumb.
    * @param {object} itemData - The OneDrive item data for this breadcrumb item.
+   * @return {BreadcrumbItemView} The added item.
    */
 
 
@@ -1343,6 +1352,20 @@ var BreadcrumbView = function () {
       var itemData = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
       var item = new _breadcrumbItemView2.default(itemData);
+      this._items.push(item);
+      return item;
+    }
+
+    /**
+     * Adds a new item as a search item to the breadcrumb.
+     * @param {string} search - The search input submitted by user.
+     * @return {BreadcrumbItemView} The added item.
+     */
+
+  }, {
+    key: 'addSearch',
+    value: function addSearch(search) {
+      var item = new _breadcrumbItemView2.default({ id: SEARCH_ID, name: 'Your search', search: search });
       this._items.push(item);
       return item;
     }
@@ -1384,6 +1407,16 @@ var BreadcrumbView = function () {
           }
         }
       }
+    }
+
+    /**
+     * Reinitialize the breadcrumb.
+     */
+
+  }, {
+    key: 'reinit',
+    value: function reinit() {
+      this.setCurrent(ROOT_ID);
     }
   }, {
     key: 'build',
@@ -1500,7 +1533,7 @@ module.exports = exports['default'];
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var picker = '<div class="onedrive-file-picker">\n  <div class="odfp-body">\n    <div class="odfp-header">\n      <span>Select a file</span>\n      <span class="odfp-close">Close</span>\n    </div>\n    <div class="odfp-content">\n      <div onedrive-insert-breadcrumb></div>\n      <div onedrive-insert-rows></div>\n    </div>\n    <div class="odfp-footer">\n      <input class="odfp-select" type="submit" value="Select" />\n    </div>\n  </div>\n</div>';
+var picker = '<div class="onedrive-file-picker">\n  <div class="odfp-body">\n    <div class="odfp-header">\n      <span>Select a file</span>\n      <span class="odfp-close">Close</span>\n    </div>\n    <div class="odfp-content">\n      <div onedrive-insert-breadcrumb></div>\n      <div class="odfp-search">\n        <input class="odfp-search-input" type="text" />\n        <input class="odfp-search-submit odfp-button" type="submit" value="Search" />\n      </div>\n      <div onedrive-insert-rows></div>\n    </div>\n    <div class="odfp-footer">\n      <input class="odfp-select odfp-button" type="submit" value="Select" />\n    </div>\n  </div>\n</div>';
 
 exports.default = picker;
 module.exports = exports['default'];
@@ -1588,7 +1621,7 @@ var ItemView = function () {
       _item.data('item', this._itemData);
       _item.find('.odfp-name').append(this._itemData.name);
       var thumbnails = this._itemData.thumbnails;
-      if (thumbnails.length > 0) {
+      if (thumbnails && thumbnails.length > 0) {
         _item.find('.odfp-thumbnail img').attr('src', thumbnails[0].medium.url);
       }
       if (this._itemData.folder) {
@@ -1637,15 +1670,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var ONEDRIVE_FILE_PICKER_ID = 'onedrive-file-picker';
 var DEFAULT_OPTS = {
+  id: ONEDRIVE_FILE_PICKER_ID,
   // For OneDrive for Business put your resource endpoint here: https://{tenant}-my.sharepoint.com/_api/v2.0
   baseURL: 'https://api.onedrive.com/v1.0',
-  accessToken: null,
-  promiseLibrary: null
+  accessToken: null
 };
-
-var ONEDRIVE_FILE_PICKER_ID = 'onedrive-file-picker';
-var JQUERY_PICKER_SELECTOR = '#' + ONEDRIVE_FILE_PICKER_ID;
 
 var OneDriveFilePicker = function () {
 
@@ -1662,6 +1693,8 @@ var OneDriveFilePicker = function () {
     _classCallCheck(this, OneDriveFilePicker);
 
     var options = (0, _extend2.default)(true, {}, DEFAULT_OPTS, opts);
+    this._id = options.id;
+    this._jquerySelector = '#' + this._id;
     this._api = new _api2.default({ baseURL: options.baseURL, accessToken: options.accessToken });
     this._picker = new _pickerView2.default();
     this.Promise = OneDriveFilePicker.Promise || _promise2.default;
@@ -1672,26 +1705,30 @@ var OneDriveFilePicker = function () {
     value: function select() {
       var _this = this;
 
-      (0, _jquery2.default)(JQUERY_PICKER_SELECTOR).remove();
+      if ((0, _jquery2.default)(this._jquerySelector).length === 0) {
+        (0, _jquery2.default)('body').append('<div id="' + this._id + '"></div>');
+      }
       return this._api.fetchRootChildren().then(function (res) {
-        _this._buildPicker(res.value).appendTo((0, _jquery2.default)('body'));
+        (0, _jquery2.default)(_this._jquerySelector).replaceWith(_this._buildPicker(res.value));
         _this._applyHandler();
         var select = new _this.Promise(function (resolve) {
-          (0, _jquery2.default)(JQUERY_PICKER_SELECTOR + ' input.odfp-select').click(function () {
-            var activeItem = (0, _jquery2.default)(JQUERY_PICKER_SELECTOR + ' .odfp-item.odfp-active');
-            if (activeItem.data('folder') === 'true') {
-              _this._api.fetchChildren(activeItem.data('item').id).then(function (children) {
-                _this._replaceItems(children.value);
-              });
-            } else {
-              var activeItemData = activeItem.data('item');
-              _this.close();
-              resolve({ action: 'select', item: activeItemData });
+          (0, _jquery2.default)(_this._jquerySelector + ' input.odfp-select').click(function (event) {
+            if ((0, _jquery2.default)(event.currentTarget).hasClass('odfp-active')) {
+              var activeItem = (0, _jquery2.default)(_this._jquerySelector + ' .odfp-item.odfp-active');
+              if (activeItem.data('folder') === 'true') {
+                _this._api.fetchChildren(activeItem.data('item').id).then(function (children) {
+                  _this._replaceItems(children.value);
+                });
+              } else {
+                var activeItemData = activeItem.data('item');
+                _this.close();
+                resolve({ action: 'select', item: activeItemData });
+              }
             }
           });
         });
         var close = new _this.Promise(function (resolve) {
-          (0, _jquery2.default)(JQUERY_PICKER_SELECTOR + ' span.odfp-close').click(function () {
+          (0, _jquery2.default)(_this._jquerySelector + ' span.odfp-close').click(function () {
             _this.close();
             resolve({ action: 'close' });
           });
@@ -1702,7 +1739,7 @@ var OneDriveFilePicker = function () {
   }, {
     key: 'close',
     value: function close() {
-      (0, _jquery2.default)(JQUERY_PICKER_SELECTOR).remove();
+      (0, _jquery2.default)(this._jquerySelector).hide();
     }
   }, {
     key: '_buildPicker',
@@ -1727,7 +1764,7 @@ var OneDriveFilePicker = function () {
     value: function _applyHandler() {
       var _this2 = this;
 
-      var items = (0, _jquery2.default)(JQUERY_PICKER_SELECTOR + ' .odfp-item');
+      var items = (0, _jquery2.default)(this._jquerySelector + ' .odfp-item');
       // Navigation
       items.dblclick(function (event) {
         var item = (0, _jquery2.default)(event.currentTarget);
@@ -1742,20 +1779,24 @@ var OneDriveFilePicker = function () {
         }
       });
       // Selection
+      (0, _jquery2.default)(this._jquerySelector + ' input.odfp-select').removeClass('odfp-active');
       items.click(function (event) {
         items.removeClass('odfp-active');
         (0, _jquery2.default)(event.currentTarget).addClass('odfp-active');
+        (0, _jquery2.default)(_this2._jquerySelector + ' input.odfp-select').addClass('odfp-active');
       });
       // Breadcrumb
-      (0, _jquery2.default)(JQUERY_PICKER_SELECTOR + ' .odfp-breadcrumb .odfp-breadcrumb-item').click(function (event) {
+      (0, _jquery2.default)(this._jquerySelector + ' .odfp-breadcrumb .odfp-breadcrumb-item').click(function (event) {
         var item = (0, _jquery2.default)(event.currentTarget);
         if (!item.hasClass('odfp-active')) {
           (function () {
             var itemData = item.data('item');
             var itemId = itemData.id;
             var promise = undefined;
-            if (itemId === 'ROOT') {
+            if (itemData.root) {
               promise = _this2._api.fetchRootChildren();
+            } else if (itemData.search) {
+              promise = _this2._api.search(itemData.search);
             } else {
               promise = _this2._api.fetchChildren(itemId);
             }
@@ -1765,6 +1806,23 @@ var OneDriveFilePicker = function () {
             });
           })();
         }
+      });
+      // Search
+      var searchInputId = this._jquerySelector + ' .odfp-search .odfp-search-input';
+      var submitInputId = this._jquerySelector + ' .odfp-search .odfp-search-submit';
+      (0, _jquery2.default)(searchInputId).keypress(function (event) {
+        if (event.which === 13) {
+          event.preventDefault();
+          (0, _jquery2.default)(submitInputId).click();
+        }
+      });
+      (0, _jquery2.default)(submitInputId).click(function () {
+        var search = (0, _jquery2.default)(searchInputId).val();
+        _this2._api.search(search).then(function (res) {
+          _this2._picker.reinitBreadcrumb();
+          _this2._picker.addSearchToBreadcrumb(search);
+          _this2._replaceItems(res.value);
+        });
       });
     }
 
@@ -1776,7 +1834,7 @@ var OneDriveFilePicker = function () {
     key: '_replaceItems',
     value: function _replaceItems(items) {
       var rows = this._buildPicker(items).find('.odfp-content');
-      (0, _jquery2.default)(JQUERY_PICKER_SELECTOR + ' .odfp-content').replaceWith(rows);
+      (0, _jquery2.default)(this._jquerySelector + ' .odfp-content').replaceWith(rows);
       this._applyHandler();
     }
   }]);
@@ -1880,6 +1938,17 @@ var PickerView = function () {
     }
 
     /**
+     * Adds a search item to the breadcrumb.
+     * @param {string} search - The search request.
+     */
+
+  }, {
+    key: 'addSearchToBreadcrumb',
+    value: function addSearchToBreadcrumb(search) {
+      this._breadcrumb.addSearch(search);
+    }
+
+    /**
      * Sets the current directory to the item owning the input id.
      * @param {string} itemId - The item id to set as current directory.
      */
@@ -1888,6 +1957,16 @@ var PickerView = function () {
     key: 'setBreadcrumbTo',
     value: function setBreadcrumbTo(itemId) {
       this._breadcrumb.setCurrent(itemId);
+    }
+
+    /**
+     * Reinitialize the breadcrumb.
+     */
+
+  }, {
+    key: 'reinitBreadcrumb',
+    value: function reinitBreadcrumb() {
+      this._breadcrumb.reinit();
     }
 
     /**
