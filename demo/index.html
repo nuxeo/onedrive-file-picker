@@ -1,24 +1,57 @@
 <html>
   <head>
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.8.0.min.js"></script>
     <script type="text/javascript" src="oauth.js"></script>
     <script type="text/javascript" src="onedrive-file-picker.js"></script>
     <link rel="stylesheet" type="text/css" href="onedrive-file-picker.min.css">
+    <style>
+      .text-center {
+        text-align: center;
+      }
+      .button {
+          background: #4d90fe;
+          background-image: linear-gradient(to bottom,#4d90fe,#4787ed);
+          border: 1px solid #3079ed;
+          color: #fff;
+      }
+      .margin-bottom {
+        margin-bottom: 20px;
+      }
+      .metadata pre {
+        overflow: auto;
+      }
+    </style>
   </head>
-  <body>
-    <input type="submit" onclick="openPicker()" value="Open Picker"/>
+  <body style="background-color: #f5f7fa;">
+    <div class="text-center margin-bottom">
+      <h3>OneDrive JavaScript File Picker</h3>
+      <input class="odfp-button button" type="submit" onclick="openPicker()" value="Open Picker"/>
+    </div>
+    <div id="result">
+      <div class="action">User action : <span></span></div>
+      <div class="filename">Filename : <span></span></div>
+      <div class="metadata">
+        Metadata :
+        <pre class="prettyprint"></pre>
+      </div>
+    </div>
+
     <script type="text/javascript">
       function openPicker() {
         getToken().then(function(token) {
           return new OneDriveFilePicker({ 'accessToken': token }).select();
         }).then(function(result) {
+          $("#result .action span").html(result.action);
+          $("#result .filename span").html('');
+          $('#result .metadata pre').html('');
           if (result.action === 'select') {
-            $('#result').html(JSON.stringify(result.item));
+            $("#result .filename span").html(result.item.name);
+            $('#result .metadata pre').html(JSON.stringify(result.item, null, '  '));
           }
         });
       }
     </script>
-    <div id="result"></div>
     <span id="browser-sync-binding"></span>
   </body>
 </html>

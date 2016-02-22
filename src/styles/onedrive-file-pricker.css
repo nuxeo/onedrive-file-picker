@@ -12,7 +12,7 @@
 
 .odfp-body {
   background-color: #fefefe;
-  margin: 15% auto;
+  margin: 5% auto;
   border: 1px solid #888;
   width: 80%;
 }
@@ -41,7 +41,7 @@
 .odfp-content {
   padding: 1em;
   overflow: auto;
-  height: 50%;
+  height: 70%;
   max-height: 400px;
 }
 
@@ -81,6 +81,22 @@
   border-radius: 4px;
 }
 
+.odfp-search .odfp-search-input {
+  border-radius: 1px;
+  border: 1px solid #d9d9d9;
+  border-top: 1px solid #c0c0c0;
+  font-size: 13px;
+  height: 25px;
+  padding: 1px 8px;
+}
+
+.odfp-search .odfp-search-submit {
+  background-color: #f5f5f5;
+  background-image: linear-gradient(to bottom,#f5f5f5,#f1f1f1);
+  color: #444;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
 .odfp-row {
 
 }
@@ -92,17 +108,16 @@
   padding: 0.5%;
 }
 .odfp-row .odfp-item.odfp-active {
-  background-color: blue;
+  background-color: #4787ed;
 }
 
 .odfp-row .odfp-item .odfp-thumbnail {
-
+  text-align: center;
 }
 
 .odfp-row .odfp-item .odfp-thumbnail img {
-  width: 100%;
-  max-width: 176px;
-  max-height: 176px;
+  max-width: 100%;
+  clip:rect(0px,176px,176px,0px);
 }
 
 .odfp-row .odfp-item .odfp-name {
@@ -115,4 +130,31 @@
   font-size: 1em;
   margin: 0;
   padding: 1em 1.8em 0.5em;
+}
+
+.odfp-footer .odfp-select {
+    background: #4d90fe;
+    background-image: linear-gradient(to bottom,#4d90fe,#4787ed);
+    filter: alpha(opacity=50);
+    opacity: .5;
+    border: 1px solid #3079ed;
+    color: #fff;
+}
+.odfp-footer .odfp-select.odfp-active {
+  filter: alpha(opacity=100);
+  opacity: 1;
+}
+
+.odfp-button {
+  border-radius: 2px;
+  cursor: default;
+  font-size: 11px;
+  font-weight: bold;
+  text-align: center;
+  white-space: nowrap;
+  margin-right: 16px;
+  height: 27px;
+  min-width: 54px;
+  outline: 0;
+  padding: 0 8px;
 }
