@@ -10,7 +10,6 @@ const DEFAULT_OPTS = {
   // For OneDrive for Business put your resource endpoint here: https://{tenant}-my.sharepoint.com/_api/v2.0
   baseURL: 'https://api.onedrive.com/v1.0',
   accessToken: null,
-  promiseLibrary: null,
 };
 
 const ONEDRIVE_FILE_PICKER_ID = 'onedrive-file-picker';
@@ -37,16 +36,18 @@ class OneDriveFilePicker {
       this._buildPicker(res.value).appendTo(jquery('body'));
       this._applyHandler();
       const select = new this.Promise((resolve) => {
-        jquery(JQUERY_PICKER_SELECTOR + ' input.odfp-select').click(() => {
-          const activeItem = jquery(JQUERY_PICKER_SELECTOR + ' .odfp-item.odfp-active');
-          if (activeItem.data('folder') === 'true') {
-            this._api.fetchChildren(activeItem.data('item').id).then((children) => {
-              this._replaceItems(children.value);
-            });
-          } else {
-            const activeItemData = activeItem.data('item');
-            this.close();
-            resolve({ action: 'select', item: activeItemData });
+        jquery(JQUERY_PICKER_SELECTOR + ' input.odfp-select').click((event) => {
+          if (jquery(event.currentTarget).hasClass('odfp-active')) {
+            const activeItem = jquery(JQUERY_PICKER_SELECTOR + ' .odfp-item.odfp-active');
+            if (activeItem.data('folder') === 'true') {
+              this._api.fetchChildren(activeItem.data('item').id).then((children) => {
+                this._replaceItems(children.value);
+              });
+            } else {
+              const activeItemData = activeItem.data('item');
+              this.close();
+              resolve({ action: 'select', item: activeItemData });
+            }
           }
         });
       });
@@ -93,9 +94,11 @@ class OneDriveFilePicker {
       }
     });
     // Selection
+    jquery(JQUERY_PICKER_SELECTOR + ' input.odfp-select').removeClass('odfp-active');
     items.click((event) => {
       items.removeClass('odfp-active');
       jquery(event.currentTarget).addClass('odfp-active');
+      jquery(JQUERY_PICKER_SELECTOR + ' input.odfp-select').addClass('odfp-active');
     });
     // Breadcrumb
     jquery(JQUERY_PICKER_SELECTOR + ' .odfp-breadcrumb .odfp-breadcrumb-item').click((event) => {
