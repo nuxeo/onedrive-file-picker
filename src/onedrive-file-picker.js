@@ -69,14 +69,10 @@ class OneDriveFilePicker {
   }
 
   _buildPicker(items) {
-    this._picker.clearRows();
-    let row;
-    for (let i = 0; i < items.length; i++) {
-      if (i % 5 === 0) {
-        row = this._picker.addRow();
-      }
-      row.addCol(items[i]);
-    }
+    this._picker.clearItems();
+    items.forEach((item) => {
+      this._picker.addItem(item);
+    });
     return this._picker.build().attr('id', ONEDRIVE_FILE_PICKER_ID);
   }
 
@@ -146,8 +142,8 @@ class OneDriveFilePicker {
    * Replaces items in the dom and applies the handlers.
    */
   _replaceItems(items) {
-    const rows = this._buildPicker(items).find('.odfp-content');
-    jquery(this._jquerySelector + ' .odfp-content').replaceWith(rows);
+    const content = this._buildPicker(items).find('.odfp-content');
+    jquery(this._jquerySelector + ' .odfp-content').replaceWith(content);
     this._applyHandler();
   }
 

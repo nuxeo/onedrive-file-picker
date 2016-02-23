@@ -1,9 +1,9 @@
 'use strict';
 
 import BreadcrumbView from './breadcrumb-view';
+import ItemView from './item-view';
 import jquery from './deps/jquery';
 import picker from './html/picker';
-import RowView from './row-view';
 
 /**
  * The PickerView class used to build the view.
@@ -17,24 +17,24 @@ class PickerView {
    */
   constructor() {
     this._breadcrumb = new BreadcrumbView();
-    this._rows = [];
+    this._items = [];
   }
 
   /**
-   * Adds a row to the picker and return it.
-   * @return {RowView} The added row view.
+   * Add a new item to the grid.
+   * @param {object} itemData - The OneDrive item data for this item.
    */
-  addRow() {
-    const row = new RowView();
-    this._rows.push(row);
-    return row;
+  addItem(itemData = {}) {
+    const item = new ItemView(itemData);
+    this._items.push(item);
+    return item;
   }
 
   /**
-   * Clears the rows.
+   * Clears the items.
    */
-  clearRows() {
-    this._rows = [];
+  clearItems() {
+    this._items = [];
   }
 
   /**
@@ -75,9 +75,9 @@ class PickerView {
     const _picker = jquery(picker);
     const _insertBreadcrumb = _picker.find('[onedrive-insert-breadcrumb]');
     _insertBreadcrumb.append(this._breadcrumb.build());
-    const _insertRows = _picker.find('[onedrive-insert-rows]');
-    for (const row of this._rows) {
-      _insertRows.append(row.build());
+    const _insertItems = _picker.find('[onedrive-insert-items]');
+    for (const item of this._items) {
+      _insertItems.append(item.build());
     }
     return _picker;
   }

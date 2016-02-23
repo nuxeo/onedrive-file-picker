@@ -3,7 +3,7 @@
 const item =
 `<div class="odfp-item">
   <div class="odfp-thumbnail">
-    <img />
+    <div class="picture"></div>
   </div>
   <div class="odfp-name"></div>
 </div>`;
