@@ -3,7 +3,6 @@
 import Api from './api';
 import PickerView from './picker-view';
 import extend from 'extend';
-import jquery from './deps/jquery';
 import Promise from './deps/promise';
 
 const ONEDRIVE_FILE_PICKER_ID = 'onedrive-file-picker';
@@ -25,23 +24,23 @@ class OneDriveFilePicker {
   constructor(opts = {}) {
     const options = extend(true, {}, DEFAULT_OPTS, opts);
     this._id = options.id;
-    this._jquerySelector = `#${this._id}`;
+    this._jQuerySelector = `#${this._id}`;
     this._api = new Api({ baseURL: options.baseURL, accessToken: options.accessToken });
     this._picker = new PickerView();
     this.Promise = OneDriveFilePicker.Promise || Promise;
   }
 
   select() {
-    if (jquery(this._jquerySelector).length === 0) {
-      jquery('body').append(`<div id="${this._id}"></div>`);
+    if (jQuery(this._jQuerySelector).length === 0) {
+      jQuery('body').append(`<div id="${this._id}"></div>`);
     }
     return this._api.fetchRootChildren().then((res) => {
-      jquery(this._jquerySelector).replaceWith(this._buildPicker(res.value));
+      jQuery(this._jQuerySelector).replaceWith(this._buildPicker(res.value));
       this._applyHandler();
       const select = new this.Promise((resolve) => {
-        jquery(this._jquerySelector + ' input.odfp-select').click((event) => {
-          if (jquery(event.currentTarget).hasClass('odfp-active')) {
-            const activeItem = jquery(this._jquerySelector + ' .odfp-item.odfp-active');
+        jQuery(this._jQuerySelector + ' input.odfp-select').click((event) => {
+          if (jQuery(event.currentTarget).hasClass('odfp-active')) {
+            const activeItem = jQuery(this._jQuerySelector + ' .odfp-item.odfp-active');
             if (activeItem.data('folder') === 'true') {
               this._api.fetchChildren(activeItem.data('item').id).then((children) => {
                 this._replaceItems(children.value);
@@ -55,7 +54,7 @@ class OneDriveFilePicker {
         });
       });
       const close = new this.Promise((resolve) => {
-        jquery(this._jquerySelector + ' span.odfp-close').click(() => {
+        jQuery(this._jQuerySelector + ' span.odfp-close').click(() => {
           this.close();
           resolve({ action: 'close' });
         });
@@ -65,7 +64,7 @@ class OneDriveFilePicker {
   }
 
   close() {
-    jquery(this._jquerySelector).hide();
+    jQuery(this._jQuerySelector).hide();
   }
 
   _buildPicker(items) {
@@ -80,10 +79,10 @@ class OneDriveFilePicker {
    * Applies handler on all items.
    */
   _applyHandler() {
-    const items = jquery(this._jquerySelector + ' .odfp-item');
+    const items = jQuery(this._jQuerySelector + ' .odfp-item');
     // Navigation
     items.dblclick((event) => {
-      const item = jquery(event.currentTarget);
+      const item = jQuery(event.currentTarget);
       if (item.data('folder') === 'true') {
         const itemData = item.data('item');
         this._api.fetchChildren(itemData.id).then((res) => {
@@ -93,15 +92,15 @@ class OneDriveFilePicker {
       }
     });
     // Selection
-    jquery(this._jquerySelector + ' input.odfp-select').removeClass('odfp-active');
+    jQuery(this._jQuerySelector + ' input.odfp-select').removeClass('odfp-active');
     items.click((event) => {
       items.removeClass('odfp-active');
-      jquery(event.currentTarget).addClass('odfp-active');
-      jquery(this._jquerySelector + ' input.odfp-select').addClass('odfp-active');
+      jQuery(event.currentTarget).addClass('odfp-active');
+      jQuery(this._jQuerySelector + ' input.odfp-select').addClass('odfp-active');
     });
     // Breadcrumb
-    jquery(this._jquerySelector + ' .odfp-breadcrumb .odfp-breadcrumb-item').click((event) => {
-      const item = jquery(event.currentTarget);
+    jQuery(this._jQuerySelector + ' .odfp-breadcrumb .odfp-breadcrumb-item').click((event) => {
+      const item = jQuery(event.currentTarget);
       if (!item.hasClass('odfp-active')) {
         const itemData = item.data('item');
         const itemId = itemData.id;
@@ -120,16 +119,16 @@ class OneDriveFilePicker {
       }
     });
     // Search
-    const searchInputId = this._jquerySelector + ' .odfp-search .odfp-search-input';
-    const submitInputId = this._jquerySelector + ' .odfp-search .odfp-search-submit';
-    jquery(searchInputId).keypress((event) => {
+    const searchInputId = this._jQuerySelector + ' .odfp-search .odfp-search-input';
+    const submitInputId = this._jQuerySelector + ' .odfp-search .odfp-search-submit';
+    jQuery(searchInputId).keypress((event) => {
       if (event.which === 13) {
         event.preventDefault();
-        jquery(submitInputId).click();
+        jQuery(submitInputId).click();
       }
     });
-    jquery(submitInputId).click(() => {
-      const search = jquery(searchInputId).val();
+    jQuery(submitInputId).click(() => {
+      const search = jQuery(searchInputId).val();
       this._api.search(search).then((res) => {
         this._picker.reinitBreadcrumb();
         this._picker.addSearchToBreadcrumb(search);
@@ -143,7 +142,7 @@ class OneDriveFilePicker {
    */
   _replaceItems(items) {
     const content = this._buildPicker(items).find('.odfp-content');
-    jquery(this._jquerySelector + ' .odfp-content').replaceWith(content);
+    jQuery(this._jQuerySelector + ' .odfp-content').replaceWith(content);
     this._applyHandler();
   }
 

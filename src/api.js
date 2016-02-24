@@ -1,6 +1,5 @@
 'use strict';
 
-import jquery from './deps/jquery';
 import Promise from './deps/promise';
 
 /**
@@ -35,7 +34,7 @@ class Api {
 
   _fetch(path) {
     return new Promise((resolve, reject) => {
-      jquery.ajax({
+      jQuery.ajax({
         url: this._baseURL + path,
         type: 'GET',
         beforeSend: (xhr) => {xhr.setRequestHeader('Authorization', 'Bearer ' + this._accessToken);},

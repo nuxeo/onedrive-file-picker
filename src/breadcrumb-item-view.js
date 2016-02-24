@@ -1,6 +1,5 @@
 'use strict';
 
-import jquery from './deps/jquery';
 import breadcrumItem from './html/breadcrumb-item';
 
 /**
@@ -27,7 +26,7 @@ class BreadcrumbItemView {
   }
 
   build() {
-    const _item = jquery(breadcrumItem);
+    const _item = jQuery(breadcrumItem);
     _item.data('item', this._itemData);
     _item.find('a').html(this._itemData.name);
     return _item;

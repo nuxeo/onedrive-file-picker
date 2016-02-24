@@ -2,7 +2,6 @@
 
 import BreadcrumbView from './breadcrumb-view';
 import ItemView from './item-view';
-import jquery from './deps/jquery';
 import picker from './html/picker';
 
 /**
@@ -72,7 +71,7 @@ class PickerView {
    * Builds the picker.
    */
   build() {
-    const _picker = jquery(picker);
+    const _picker = jQuery(picker);
     const _insertBreadcrumb = _picker.find('[onedrive-insert-breadcrumb]');
     _insertBreadcrumb.append(this._breadcrumb.build());
     const _insertItems = _picker.find('[onedrive-insert-items]');

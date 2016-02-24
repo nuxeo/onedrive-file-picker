@@ -1,6 +1,5 @@
 'use strict';
 
-import jquery from './deps/jquery';
 import breadcrumb from './html/breadcrumb';
 import BreadcrumbItemView from './breadcrumb-item-view';
 
@@ -66,7 +65,7 @@ class BreadcrumbView {
   }
 
   build() {
-    const _breadcrumb = jquery(breadcrumb);
+    const _breadcrumb = jQuery(breadcrumb);
     let _element = _breadcrumb.find('[onedrive-insert-breadcrumb-items]');
     if (_element.length === 0) {
       _element = _breadcrumb;

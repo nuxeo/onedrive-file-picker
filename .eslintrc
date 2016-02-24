@@ -8,6 +8,7 @@
     }]
   },
   'globals': {
-    'OneDriveFilePicker': false
+    'OneDriveFilePicker': false,
+    'jQuery': false
   },
 }

@@ -1,6 +1,5 @@
 'use strict';
 
-import jquery from './deps/jquery';
 import item from './html/item';
 
 /**
@@ -19,7 +18,7 @@ class ItemView {
   }
 
   build() {
-    const _item = jquery(item);
+    const _item = jQuery(item);
     _item.addClass('odfp-item');
     _item.data('item', this._itemData);
     _item.find('.odfp-name').append(this._itemData.name);
