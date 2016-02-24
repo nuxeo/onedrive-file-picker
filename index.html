@@ -5,15 +5,40 @@
     <script type="text/javascript" src="oauth.js"></script>
     <script type="text/javascript" src="onedrive-file-picker.js"></script>
     <link rel="stylesheet" type="text/css" href="onedrive-file-picker.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f4fbfe url(../images/background-x.png) top right repeat-y;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        margin-bottom: 3em;
+        width:50%;
+        min-width: 540px;
+        margin: auto;
+      }
+      .header {
+        background-color: rgb(29,163,200);
+        color: white;
+        font-size: 140%;
+        padding: 2em;
+      }
+      .content {
+        background-color: white;
+        padding: 10px 20px;
+      }
       .text-center {
         text-align: center;
       }
       .button {
-          background: #4d90fe;
-          background-image: linear-gradient(to bottom,#4d90fe,#4787ed);
-          border: 1px solid #3079ed;
-          color: #fff;
+        background: #00adff;
+        border: 1px solid #3079ed;
+        color: #fff;
+      }
+      .button:hover {
+        background-color: #0079b3;
       }
       .margin-bottom {
         margin-bottom: 20px;
@@ -21,19 +46,34 @@
       .metadata pre {
         overflow: auto;
       }
+      .title {
+        color: #707070;
+      }
+      @media (max-width:1020px) {
+        .container {
+          margin:0;
+          width:100%;
+        }
+      }
     </style>
   </head>
-  <body style="background-color: #f5f7fa;">
-    <div class="text-center margin-bottom">
-      <h3>OneDrive JavaScript File Picker</h3>
-      <input class="odfp-button button" type="submit" onclick="openPicker()" value="Open Picker"/>
-    </div>
-    <div id="result">
-      <div class="action">User action : <span></span></div>
-      <div class="filename">Filename : <span></span></div>
-      <div class="metadata">
-        Metadata :
-        <pre class="prettyprint"></pre>
+  <body>
+    <div class="container">
+      <div class="header text-center">
+        <h3>OneDrive JavaScript File Picker</h3>
+      </div>
+      <div class="content">
+        <div class="margin-bottom text-center">
+          <input class="odfp-button button" type="submit" onclick="openPicker()" value="Open Picker"/>
+        </div>
+        <div id="result">
+          <div class="action"><span class="title">User action : </span><span class="data"></span></div>
+          <div class="filename"><span class="title">Filename : </span><span class="data"></span></div>
+          <div class="metadata">
+            <span class="title">Metadata :</span>
+            <pre class="prettyprint" style="display:none;"></pre>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -42,12 +82,14 @@
         getToken().then(function(token) {
           return new OneDriveFilePicker({ 'accessToken': token }).select();
         }).then(function(result) {
-          $("#result .action span").html(result.action);
-          $("#result .filename span").html('');
+          $("#result .action span.data").html(result.action);
+          $("#result .filename span.data").html('');
           $('#result .metadata pre').html('');
+          $('#result .metadata pre').hide();
           if (result.action === 'select') {
-            $("#result .filename span").html(result.item.name);
+            $("#result .filename span.data").html(result.item.name);
             $('#result .metadata pre').html(JSON.stringify(result.item, null, '  '));
+            $('#result .metadata pre').show();
           }
         });
       }

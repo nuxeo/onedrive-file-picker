@@ -1146,10 +1146,6 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _jquery = require('./deps/jquery');
-
-var _jquery2 = _interopRequireDefault(_jquery);
-
 var _promise = require('./deps/promise');
 
 var _promise2 = _interopRequireDefault(_promise);
@@ -1201,7 +1197,7 @@ var Api = function () {
       var _this = this;
 
       return new _promise2.default(function (resolve, reject) {
-        _jquery2.default.ajax({
+        jQuery.ajax({
           url: _this._baseURL + path,
           type: 'GET',
           beforeSend: function beforeSend(xhr) {
@@ -1224,7 +1220,7 @@ var Api = function () {
 exports.default = Api;
 module.exports = exports['default'];
 
-},{"./deps/jquery":7,"./deps/promise":8}],5:[function(require,module,exports){
+},{"./deps/promise":7}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1232,10 +1228,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _jquery = require('./deps/jquery');
-
-var _jquery2 = _interopRequireDefault(_jquery);
 
 var _breadcrumbItem = require('./html/breadcrumb-item');
 
@@ -1280,7 +1272,7 @@ var BreadcrumbItemView = function () {
   }, {
     key: 'build',
     value: function build() {
-      var _item = (0, _jquery2.default)(_breadcrumbItem2.default);
+      var _item = jQuery(_breadcrumbItem2.default);
       _item.data('item', this._itemData);
       _item.find('a').html(this._itemData.name);
       return _item;
@@ -1293,7 +1285,7 @@ var BreadcrumbItemView = function () {
 exports.default = BreadcrumbItemView;
 module.exports = exports['default'];
 
-},{"./deps/jquery":7,"./html/breadcrumb-item":9}],6:[function(require,module,exports){
+},{"./html/breadcrumb-item":8}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1301,10 +1293,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _jquery = require('./deps/jquery');
-
-var _jquery2 = _interopRequireDefault(_jquery);
 
 var _breadcrumb2 = require('./html/breadcrumb');
 
@@ -1421,8 +1409,8 @@ var BreadcrumbView = function () {
   }, {
     key: 'build',
     value: function build() {
-      var _breadcrumb = (0, _jquery2.default)(_breadcrumb3.default);
-      var _element = _breadcrumb.find('[onedrive-insert-items]');
+      var _breadcrumb = jQuery(_breadcrumb3.default);
+      var _element = _breadcrumb.find('[onedrive-insert-breadcrumb-items]');
       if (_element.length === 0) {
         _element = _breadcrumb;
       }
@@ -1463,20 +1451,7 @@ var BreadcrumbView = function () {
 exports.default = BreadcrumbView;
 module.exports = exports['default'];
 
-},{"./breadcrumb-item-view":5,"./deps/jquery":7,"./html/breadcrumb":10}],7:[function(require,module,exports){
-(function (global){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var jquery = (typeof window !== "undefined" ? window['$'] : typeof global !== "undefined" ? global['$'] : null);
-
-exports.default = jquery;
-module.exports = exports['default'];
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],8:[function(require,module,exports){
+},{"./breadcrumb-item-view":5,"./html/breadcrumb":9}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1494,7 +1469,7 @@ _es6Promise2.default.polyfill();
 exports.default = Promise;
 module.exports = exports['default'];
 
-},{"es6-promise":1}],9:[function(require,module,exports){
+},{"es6-promise":1}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1505,15 +1480,26 @@ var breadcrumbItem = '<li class="odfp-breadcrumb-item">\n  <a href="#">Breadcrum
 exports.default = breadcrumbItem;
 module.exports = exports['default'];
 
+},{}],9:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var breadcrumb = '<ol class="odfp-breadcrumb" onedrive-insert-breadcrumb-items></ol>';
+
+exports.default = breadcrumb;
+module.exports = exports['default'];
+
 },{}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var breadcrumb = '<ol class="odfp-breadcrumb" onedrive-insert-items></ol>';
+var item = '<div class="odfp-item">\n  <div class="odfp-thumbnail">\n    <div class="picture"></div>\n  </div>\n  <div class="odfp-name"></div>\n</div>';
 
-exports.default = breadcrumb;
+exports.default = item;
 module.exports = exports['default'];
 
 },{}],11:[function(require,module,exports){
@@ -1522,34 +1508,12 @@ module.exports = exports['default'];
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var item = '<div class="odfp-item">\n  <div class="odfp-thumbnail">\n    <img />\n  </div>\n  <div class="odfp-name"></div>\n</div>';
-
-exports.default = item;
-module.exports = exports['default'];
-
-},{}],12:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var picker = '<div class="onedrive-file-picker">\n  <div class="odfp-body">\n    <div class="odfp-header">\n      <span>Select a file</span>\n      <span class="odfp-close">Close</span>\n    </div>\n    <div class="odfp-content">\n      <div onedrive-insert-breadcrumb></div>\n      <div class="odfp-search">\n        <input class="odfp-search-input" type="text" />\n        <input class="odfp-search-submit odfp-button" type="submit" value="Search" />\n      </div>\n      <div onedrive-insert-rows></div>\n    </div>\n    <div class="odfp-footer">\n      <input class="odfp-select odfp-button" type="submit" value="Select" />\n    </div>\n  </div>\n</div>';
+var picker = '<div class="onedrive-file-picker">\n  <div class="odfp-body">\n    <div class="odfp-header">\n      <span>Select a file</span>\n      <span class="odfp-close">Close</span>\n    </div>\n    <div class="odfp-content">\n      <div class="odfp-search">\n        <input class="odfp-search-input" type="text" />\n        <input class="odfp-search-submit odfp-button" type="submit" value="Search" />\n      </div>\n      <div onedrive-insert-breadcrumb></div>\n      <div class="odfp-grid" onedrive-insert-items></div>\n    </div>\n    <div class="odfp-footer">\n      <input class="odfp-select odfp-button" type="submit" value="Select" />\n    </div>\n  </div>\n</div>';
 
 exports.default = picker;
 module.exports = exports['default'];
 
-},{}],13:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var row = '<div class="odfp-row" onedrive-insert-items>\n</div>';
-
-exports.default = row;
-module.exports = exports['default'];
-
-},{}],14:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1571,7 +1535,7 @@ _onedriveFilePicker2.default.promiseLibrary(_promise2.default);
 exports.default = _onedriveFilePicker2.default;
 module.exports = exports['default'];
 
-},{"./deps/promise":8,"./onedrive-file-picker":16}],15:[function(require,module,exports){
+},{"./deps/promise":7,"./onedrive-file-picker":14}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1579,10 +1543,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _jquery = require('./deps/jquery');
-
-var _jquery2 = _interopRequireDefault(_jquery);
 
 var _item2 = require('./html/item');
 
@@ -1616,13 +1576,13 @@ var ItemView = function () {
   _createClass(ItemView, [{
     key: 'build',
     value: function build() {
-      var _item = (0, _jquery2.default)(_item3.default);
+      var _item = jQuery(_item3.default);
       _item.addClass('odfp-item');
       _item.data('item', this._itemData);
       _item.find('.odfp-name').append(this._itemData.name);
       var thumbnails = this._itemData.thumbnails;
       if (thumbnails && thumbnails.length > 0) {
-        _item.find('.odfp-thumbnail img').attr('src', thumbnails[0].medium.url);
+        _item.find('.odfp-thumbnail .picture').attr('style', 'background-image: url("' + thumbnails[0].medium.url + '");');
       }
       if (this._itemData.folder) {
         _item.data('folder', 'true');
@@ -1637,7 +1597,7 @@ var ItemView = function () {
 exports.default = ItemView;
 module.exports = exports['default'];
 
-},{"./deps/jquery":7,"./html/item":11}],16:[function(require,module,exports){
+},{"./html/item":10}],14:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1657,10 +1617,6 @@ var _pickerView2 = _interopRequireDefault(_pickerView);
 var _extend = require('extend');
 
 var _extend2 = _interopRequireDefault(_extend);
-
-var _jquery = require('./deps/jquery');
-
-var _jquery2 = _interopRequireDefault(_jquery);
 
 var _promise = require('./deps/promise');
 
@@ -1694,7 +1650,7 @@ var OneDriveFilePicker = function () {
 
     var options = (0, _extend2.default)(true, {}, DEFAULT_OPTS, opts);
     this._id = options.id;
-    this._jquerySelector = '#' + this._id;
+    this._jQuerySelector = '#' + this._id;
     this._api = new _api2.default({ baseURL: options.baseURL, accessToken: options.accessToken });
     this._picker = new _pickerView2.default();
     this.Promise = OneDriveFilePicker.Promise || _promise2.default;
@@ -1705,16 +1661,16 @@ var OneDriveFilePicker = function () {
     value: function select() {
       var _this = this;
 
-      if ((0, _jquery2.default)(this._jquerySelector).length === 0) {
-        (0, _jquery2.default)('body').append('<div id="' + this._id + '"></div>');
+      if (jQuery(this._jQuerySelector).length === 0) {
+        jQuery('body').append('<div id="' + this._id + '"></div>');
       }
       return this._api.fetchRootChildren().then(function (res) {
-        (0, _jquery2.default)(_this._jquerySelector).replaceWith(_this._buildPicker(res.value));
+        jQuery(_this._jQuerySelector).replaceWith(_this._buildPicker(res.value));
         _this._applyHandler();
         var select = new _this.Promise(function (resolve) {
-          (0, _jquery2.default)(_this._jquerySelector + ' input.odfp-select').click(function (event) {
-            if ((0, _jquery2.default)(event.currentTarget).hasClass('odfp-active')) {
-              var activeItem = (0, _jquery2.default)(_this._jquerySelector + ' .odfp-item.odfp-active');
+          jQuery(_this._jQuerySelector + ' input.odfp-select').click(function (event) {
+            if (jQuery(event.currentTarget).hasClass('odfp-active')) {
+              var activeItem = jQuery(_this._jQuerySelector + ' .odfp-item.odfp-active');
               if (activeItem.data('folder') === 'true') {
                 _this._api.fetchChildren(activeItem.data('item').id).then(function (children) {
                   _this._replaceItems(children.value);
@@ -1728,7 +1684,7 @@ var OneDriveFilePicker = function () {
           });
         });
         var close = new _this.Promise(function (resolve) {
-          (0, _jquery2.default)(_this._jquerySelector + ' span.odfp-close').click(function () {
+          jQuery(_this._jQuerySelector + ' span.odfp-close').click(function () {
             _this.close();
             resolve({ action: 'close' });
           });
@@ -1739,19 +1695,17 @@ var OneDriveFilePicker = function () {
   }, {
     key: 'close',
     value: function close() {
-      (0, _jquery2.default)(this._jquerySelector).hide();
+      jQuery(this._jQuerySelector).hide();
     }
   }, {
     key: '_buildPicker',
     value: function _buildPicker(items) {
-      this._picker.clearRows();
-      var row = undefined;
-      for (var i = 0; i < items.length; i++) {
-        if (i % 5 === 0) {
-          row = this._picker.addRow();
-        }
-        row.addCol(items[i]);
-      }
+      var _this2 = this;
+
+      this._picker.clearItems();
+      items.forEach(function (item) {
+        _this2._picker.addItem(item);
+      });
       return this._picker.build().attr('id', ONEDRIVE_FILE_PICKER_ID);
     }
 
@@ -1762,66 +1716,66 @@ var OneDriveFilePicker = function () {
   }, {
     key: '_applyHandler',
     value: function _applyHandler() {
-      var _this2 = this;
+      var _this3 = this;
 
-      var items = (0, _jquery2.default)(this._jquerySelector + ' .odfp-item');
+      var items = jQuery(this._jQuerySelector + ' .odfp-item');
       // Navigation
       items.dblclick(function (event) {
-        var item = (0, _jquery2.default)(event.currentTarget);
+        var item = jQuery(event.currentTarget);
         if (item.data('folder') === 'true') {
           (function () {
             var itemData = item.data('item');
-            _this2._api.fetchChildren(itemData.id).then(function (res) {
-              _this2._picker.addItemToBreadcrumb(itemData);
-              _this2._replaceItems(res.value);
+            _this3._api.fetchChildren(itemData.id).then(function (res) {
+              _this3._picker.addItemToBreadcrumb(itemData);
+              _this3._replaceItems(res.value);
             });
           })();
         }
       });
       // Selection
-      (0, _jquery2.default)(this._jquerySelector + ' input.odfp-select').removeClass('odfp-active');
+      jQuery(this._jQuerySelector + ' input.odfp-select').removeClass('odfp-active');
       items.click(function (event) {
         items.removeClass('odfp-active');
-        (0, _jquery2.default)(event.currentTarget).addClass('odfp-active');
-        (0, _jquery2.default)(_this2._jquerySelector + ' input.odfp-select').addClass('odfp-active');
+        jQuery(event.currentTarget).addClass('odfp-active');
+        jQuery(_this3._jQuerySelector + ' input.odfp-select').addClass('odfp-active');
       });
       // Breadcrumb
-      (0, _jquery2.default)(this._jquerySelector + ' .odfp-breadcrumb .odfp-breadcrumb-item').click(function (event) {
-        var item = (0, _jquery2.default)(event.currentTarget);
+      jQuery(this._jQuerySelector + ' .odfp-breadcrumb .odfp-breadcrumb-item').click(function (event) {
+        var item = jQuery(event.currentTarget);
         if (!item.hasClass('odfp-active')) {
           (function () {
             var itemData = item.data('item');
             var itemId = itemData.id;
             var promise = undefined;
             if (itemData.root) {
-              promise = _this2._api.fetchRootChildren();
+              promise = _this3._api.fetchRootChildren();
             } else if (itemData.search) {
-              promise = _this2._api.search(itemData.search);
+              promise = _this3._api.search(itemData.search);
             } else {
-              promise = _this2._api.fetchChildren(itemId);
+              promise = _this3._api.fetchChildren(itemId);
             }
             promise.then(function (res) {
-              _this2._picker.setBreadcrumbTo(itemId);
-              _this2._replaceItems(res.value);
+              _this3._picker.setBreadcrumbTo(itemId);
+              _this3._replaceItems(res.value);
             });
           })();
         }
       });
       // Search
-      var searchInputId = this._jquerySelector + ' .odfp-search .odfp-search-input';
-      var submitInputId = this._jquerySelector + ' .odfp-search .odfp-search-submit';
-      (0, _jquery2.default)(searchInputId).keypress(function (event) {
+      var searchInputId = this._jQuerySelector + ' .odfp-search .odfp-search-input';
+      var submitInputId = this._jQuerySelector + ' .odfp-search .odfp-search-submit';
+      jQuery(searchInputId).keypress(function (event) {
         if (event.which === 13) {
           event.preventDefault();
-          (0, _jquery2.default)(submitInputId).click();
+          jQuery(submitInputId).click();
         }
       });
-      (0, _jquery2.default)(submitInputId).click(function () {
-        var search = (0, _jquery2.default)(searchInputId).val();
-        _this2._api.search(search).then(function (res) {
-          _this2._picker.reinitBreadcrumb();
-          _this2._picker.addSearchToBreadcrumb(search);
-          _this2._replaceItems(res.value);
+      jQuery(submitInputId).click(function () {
+        var search = jQuery(searchInputId).val();
+        _this3._api.search(search).then(function (res) {
+          _this3._picker.reinitBreadcrumb();
+          _this3._picker.addSearchToBreadcrumb(search);
+          _this3._replaceItems(res.value);
         });
       });
     }
@@ -1833,8 +1787,8 @@ var OneDriveFilePicker = function () {
   }, {
     key: '_replaceItems',
     value: function _replaceItems(items) {
-      var rows = this._buildPicker(items).find('.odfp-content');
-      (0, _jquery2.default)(this._jquerySelector + ' .odfp-content').replaceWith(rows);
+      var content = this._buildPicker(items).find('.odfp-content');
+      jQuery(this._jQuerySelector + ' .odfp-content').replaceWith(content);
       this._applyHandler();
     }
   }]);
@@ -1854,7 +1808,7 @@ OneDriveFilePicker.promiseLibrary = function (promiseLibrary) {
 exports.default = OneDriveFilePicker;
 module.exports = exports['default'];
 
-},{"./api":4,"./deps/jquery":7,"./deps/promise":8,"./picker-view":17,"extend":2}],17:[function(require,module,exports){
+},{"./api":4,"./deps/promise":7,"./picker-view":15,"extend":2}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1867,17 +1821,13 @@ var _breadcrumbView = require('./breadcrumb-view');
 
 var _breadcrumbView2 = _interopRequireDefault(_breadcrumbView);
 
-var _jquery = require('./deps/jquery');
+var _itemView = require('./item-view');
 
-var _jquery2 = _interopRequireDefault(_jquery);
+var _itemView2 = _interopRequireDefault(_itemView);
 
 var _picker2 = require('./html/picker');
 
 var _picker3 = _interopRequireDefault(_picker2);
-
-var _rowView = require('./row-view');
-
-var _rowView2 = _interopRequireDefault(_rowView);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1899,31 +1849,33 @@ var PickerView = function () {
     _classCallCheck(this, PickerView);
 
     this._breadcrumb = new _breadcrumbView2.default();
-    this._rows = [];
+    this._items = [];
   }
 
   /**
-   * Adds a row to the picker and return it.
-   * @return {RowView} The added row view.
+   * Add a new item to the grid.
+   * @param {object} itemData - The OneDrive item data for this item.
    */
 
 
   _createClass(PickerView, [{
-    key: 'addRow',
-    value: function addRow() {
-      var row = new _rowView2.default();
-      this._rows.push(row);
-      return row;
+    key: 'addItem',
+    value: function addItem() {
+      var itemData = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+      var item = new _itemView2.default(itemData);
+      this._items.push(item);
+      return item;
     }
 
     /**
-     * Clears the rows.
+     * Clears the items.
      */
 
   }, {
-    key: 'clearRows',
-    value: function clearRows() {
-      this._rows = [];
+    key: 'clearItems',
+    value: function clearItems() {
+      this._items = [];
     }
 
     /**
@@ -1976,19 +1928,19 @@ var PickerView = function () {
   }, {
     key: 'build',
     value: function build() {
-      var _picker = (0, _jquery2.default)(_picker3.default);
+      var _picker = jQuery(_picker3.default);
       var _insertBreadcrumb = _picker.find('[onedrive-insert-breadcrumb]');
       _insertBreadcrumb.append(this._breadcrumb.build());
-      var _insertRows = _picker.find('[onedrive-insert-rows]');
+      var _insertItems = _picker.find('[onedrive-insert-items]');
       var _iteratorNormalCompletion = true;
       var _didIteratorError = false;
       var _iteratorError = undefined;
 
       try {
-        for (var _iterator = this._rows[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var row = _step.value;
+        for (var _iterator = this._items[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var item = _step.value;
 
-          _insertRows.append(row.build());
+          _insertItems.append(item.build());
         }
       } catch (err) {
         _didIteratorError = true;
@@ -2015,106 +1967,5 @@ var PickerView = function () {
 exports.default = PickerView;
 module.exports = exports['default'];
 
-},{"./breadcrumb-view":6,"./deps/jquery":7,"./html/picker":12,"./row-view":18}],18:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _itemView = require('./item-view');
-
-var _itemView2 = _interopRequireDefault(_itemView);
-
-var _jquery = require('./deps/jquery');
-
-var _jquery2 = _interopRequireDefault(_jquery);
-
-var _row2 = require('./html/row');
-
-var _row3 = _interopRequireDefault(_row2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * The RowView class used to build the view.
- *
- * It's not meant to be used directly.
- */
-
-var RowView = function () {
-
-  /**
-   * Creates a new RowView instance.
-   */
-
-  function RowView() {
-    _classCallCheck(this, RowView);
-
-    this._cols = [];
-  }
-
-  /**
-   * Add a new item to the row.
-   * @param {object} itemData - The OneDrive item data for this item.
-   */
-
-
-  _createClass(RowView, [{
-    key: 'addCol',
-    value: function addCol() {
-      var itemData = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
-      var col = new _itemView2.default(itemData);
-      this._cols.push(col);
-      return col;
-    }
-  }, {
-    key: 'build',
-    value: function build() {
-      var _row = (0, _jquery2.default)(_row3.default);
-      var _element = _row.find('[onedrive-insert-items]');
-      if (_element.length === 0) {
-        _element = _row;
-      }
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
-
-      try {
-        for (var _iterator = this._cols[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var col = _step.value;
-
-          _element.append(col.build());
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator.return) {
-            _iterator.return();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
-      }
-
-      return _row;
-    }
-  }]);
-
-  return RowView;
-}();
-
-exports.default = RowView;
-module.exports = exports['default'];
-
-},{"./deps/jquery":7,"./html/row":13,"./item-view":15}]},{},[14])(14)
+},{"./breadcrumb-view":6,"./html/picker":11,"./item-view":13}]},{},[12])(12)
 });
