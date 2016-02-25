@@ -145,6 +145,9 @@
   left: 0;
 }
 
+.onedrive-file-picker .odfp-grid .odfp-item .odfp-thumbnail .odfp-icon {
+}
+
 .onedrive-file-picker .odfp-grid .odfp-item .odfp-name {
   text-align: center;
   padding: .3em .8em;
