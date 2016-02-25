@@ -18,18 +18,19 @@ class Api {
   constructor(options) {
     this._baseURL = options.baseURL;
     this._accessToken = options.accessToken;
+    this._business = options.business;
   }
 
   fetchRootChildren() {
-    return this._fetch('/drive/root/children?expand=thumbnails');
+    return this._fetch('/drive/root/children' + (this._business ? '' : '?expand=thumbnails'));
   }
 
   fetchChildren(itemId) {
-    return this._fetch('/drive/items/' + itemId + '/children?expand=thumbnails');
+    return this._fetch(`/drive/items/${itemId}/children` + (this._business ? '' : '?expand=thumbnails'));
   }
 
   search(search) {
-    return this._fetch('/drive/root/view.search?expand=thumbnails&q=' + encodeURI(search));
+    return this._fetch('/drive/root/view.search?q=' + encodeURI(search) + (this._business ? '' : '&expand=thumbnails'));
   }
 
   _fetch(path) {

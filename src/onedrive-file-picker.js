@@ -25,7 +25,8 @@ class OneDriveFilePicker {
     const options = extend(true, {}, DEFAULT_OPTS, opts);
     this._id = options.id;
     this._jQuerySelector = `#${this._id}`;
-    this._api = new Api({ baseURL: options.baseURL, accessToken: options.accessToken });
+    this._api = new Api({ baseURL: options.baseURL, accessToken: options.accessToken,
+      business: opts.baseURL !== DEFAULT_OPTS.baseURL });
     this._picker = new PickerView();
     this.Promise = OneDriveFilePicker.Promise || Promise;
   }
