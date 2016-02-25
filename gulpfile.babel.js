@@ -40,8 +40,7 @@ gulp.task('lint', () => {
 gulp.task('styles', () => {
   return gulp.src(['src/styles/**'])
       .pipe(autoprefixer(AUTOPREFIXER_BROWSERS))
-      .pipe(concat('onedrive-file-picker.min.css'))
-      .pipe(cssnano())
+      .pipe(concat('onedrive-file-picker.css'))
       .pipe(gulp.dest('dist'));
 });
 

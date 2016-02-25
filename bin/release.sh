@@ -48,7 +48,7 @@ cp /tmp/onedrive-file-picker-demo/* .
 sed -i '' 's/000000004C179FFB/000000004417C781/' oauth.js
 sed -i '' 's/localhost:5000/nuxeo.github.io\/onedrive-file-picker/' oauth.js
 
-git add index.html callback.html oauth.js onedrive-file-picker.min.css onedrive-file-picker.js
+git add index.html callback.html oauth.js onedrive-file-picker.css onedrive-file-picker.js
 git commit -m "Upload demo for version $VERSION"
 
 # cleanup
