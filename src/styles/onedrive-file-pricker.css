@@ -133,7 +133,7 @@
   position: relative;
 }
 
-.onedrive-file-picker .odfp-grid .odfp-item .odfp-thumbnail .picture {
+.onedrive-file-picker .odfp-grid .odfp-item .odfp-thumbnail .odfp-picture {
   background-size: cover;
   background-position: 50% 50%;
   background-repeat: no-repeat;
