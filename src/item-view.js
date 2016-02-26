@@ -31,12 +31,12 @@ class ItemView {
       _item.find('.odfp-thumbnail .odfp-picture').hide();
       if (this._itemData.folder) {
         _item.find('.odfp-thumbnail .odfp-icon').addClass('icon-folder-open');
-      } else if (this._itemData.image || this._itemData.photo) {
-        _item.find('.odfp-thumbnail .odfp-icon').addClass('icon-file-image');
-      } else if (this._itemData.audio) {
-        _item.find('.odfp-thumbnail .odfp-icon').addClass('icon-file-audio');
       } else if (this._itemData.video) {
         _item.find('.odfp-thumbnail .odfp-icon').addClass('icon-file-video');
+      } else if (this._itemData.audio) {
+        _item.find('.odfp-thumbnail .odfp-icon').addClass('icon-file-audio');
+      } else if (this._itemData.image || this._itemData.photo) {
+        _item.find('.odfp-thumbnail .odfp-icon').addClass('icon-file-image');
       } else {
         _item.find('.odfp-thumbnail .odfp-icon').addClass('icon-doc-text');
       }
