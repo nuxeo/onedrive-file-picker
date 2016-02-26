@@ -25,7 +25,9 @@
   text-transform: none;
 
   /* fix buttons height, for twitter bootstrap */
-  line-height: 1em;
+  line-height: 3em;
+  font-size: 3em;
+  color: rgba(41,74,107,0.3);
 
   /* Animation center compensation - margins should be symmetric */
   /* remove if not needed */
