@@ -1174,22 +1174,23 @@ var Api = function () {
 
     this._baseURL = options.baseURL;
     this._accessToken = options.accessToken;
+    this._business = options.business;
   }
 
   _createClass(Api, [{
     key: 'fetchRootChildren',
     value: function fetchRootChildren() {
-      return this._fetch('/drive/root/children?expand=thumbnails');
+      return this._fetch('/drive/root/children' + (this._business ? '' : '?expand=thumbnails'));
     }
   }, {
     key: 'fetchChildren',
     value: function fetchChildren(itemId) {
-      return this._fetch('/drive/items/' + itemId + '/children?expand=thumbnails');
+      return this._fetch('/drive/items/' + itemId + '/children' + (this._business ? '' : '?expand=thumbnails'));
     }
   }, {
     key: 'search',
     value: function search(_search) {
-      return this._fetch('/drive/root/view.search?expand=thumbnails&q=' + encodeURI(_search));
+      return this._fetch('/drive/root/view.search?q=' + encodeURI(_search) + (this._business ? '' : '&expand=thumbnails'));
     }
   }, {
     key: '_fetch',
@@ -1497,7 +1498,7 @@ module.exports = exports['default'];
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var item = '<div class="odfp-item">\n  <div class="odfp-thumbnail">\n    <div class="picture"></div>\n  </div>\n  <div class="odfp-name"></div>\n</div>';
+var item = '<div class="odfp-item">\n  <div class="odfp-thumbnail">\n    <div class="odfp-picture"></div>\n    <div class="odfp-icon"></div>\n  </div>\n  <div class="odfp-name"></div>\n</div>';
 
 exports.default = item;
 module.exports = exports['default'];
@@ -1582,7 +1583,21 @@ var ItemView = function () {
       _item.find('.odfp-name').append(this._itemData.name);
       var thumbnails = this._itemData.thumbnails;
       if (thumbnails && thumbnails.length > 0) {
-        _item.find('.odfp-thumbnail .picture').attr('style', 'background-image: url("' + thumbnails[0].medium.url + '");');
+        _item.find('.odfp-thumbnail .odfp-picture').attr('style', 'background-image: url("' + thumbnails[0].medium.url + '");');
+        _item.find('.odfp-thumbnail .odfp-icon').hide();
+      } else {
+        _item.find('.odfp-thumbnail .odfp-picture').hide();
+        if (this._itemData.folder) {
+          _item.find('.odfp-thumbnail .odfp-icon').addClass('icon-folder-open');
+        } else if (this._itemData.video) {
+          _item.find('.odfp-thumbnail .odfp-icon').addClass('icon-file-video');
+        } else if (this._itemData.audio) {
+          _item.find('.odfp-thumbnail .odfp-icon').addClass('icon-file-audio');
+        } else if (this._itemData.image || this._itemData.photo) {
+          _item.find('.odfp-thumbnail .odfp-icon').addClass('icon-file-image');
+        } else {
+          _item.find('.odfp-thumbnail .odfp-icon').addClass('icon-doc-text');
+        }
       }
       if (this._itemData.folder) {
         _item.data('folder', 'true');
@@ -1651,7 +1666,8 @@ var OneDriveFilePicker = function () {
     var options = (0, _extend2.default)(true, {}, DEFAULT_OPTS, opts);
     this._id = options.id;
     this._jQuerySelector = '#' + this._id;
-    this._api = new _api2.default({ baseURL: options.baseURL, accessToken: options.accessToken });
+    this._api = new _api2.default({ baseURL: options.baseURL, accessToken: options.accessToken,
+      business: opts.baseURL !== DEFAULT_OPTS.baseURL });
     this._picker = new _pickerView2.default();
     this.Promise = OneDriveFilePicker.Promise || _promise2.default;
   }
