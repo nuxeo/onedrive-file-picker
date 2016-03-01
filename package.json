@@ -23,13 +23,9 @@
     "onedrive-file-picker"
   ],
   "dependencies": {
-    "buffer": "^3.6.0",
     "es6-promise": "^3.0.2",
     "extend": "^3.0.0",
-    "form-data": "^1.0.0-rc1",
-    "isomorphic-fetch": "^2.2.0",
-    "promise-queue": "^2.2.2",
-    "query-string": "^3.0.0"
+    "promise-queue": "^2.2.2"
   },
   "devDependencies": {
     "babel-core": "^6.4.0",
@@ -39,26 +35,14 @@
     "babelify": "^7.2.0",
     "browser-sync": "^2.11.1",
     "browserify": "^13.0.0",
-    "chai": "^3.0.0",
-    "dirty-chai": "^1.2.2",
     "eslint-config-airbnb": "^3.1.0",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^3.1.0",
     "gulp-babel": "^6.1.1",
     "gulp-concat": "^2.6.0",
-    "gulp-cssnano": "^2.1.1",
     "gulp-eslint": "^1.1.1",
-    "gulp-karma": "0.0.5",
     "gulp-nsp": "^2.3.0",
     "gulp-sequence": "^0.4.4",
-    "gulp-spawn-mocha": "^2.2.2",
-    "karma": "^0.13.19",
-    "karma-babel-preprocessor": "^6.0.1",
-    "karma-browserify": "^5.0.1",
-    "karma-chai": "^0.1.0",
-    "karma-chrome-launcher": "^0.2.2",
-    "karma-firefox-launcher": "^0.1.7",
-    "karma-mocha": "^0.2.1",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.7.0"
   },
@@ -67,7 +51,6 @@
     "release": "./bin/release.sh"
   },
   "files": [
-    "lib",
     "dist"
   ]
 }

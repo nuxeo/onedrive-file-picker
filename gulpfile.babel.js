@@ -6,12 +6,9 @@ import babel from 'gulp-babel';
 import browserify from 'browserify';
 import browserSync from 'browser-sync';
 import concat from 'gulp-concat';
-import cssnano from 'gulp-cssnano';
 import source from 'vinyl-source-stream';
 import eslint from 'gulp-eslint';
-import mocha from 'gulp-spawn-mocha';
 import babelify from 'babelify';
-import { Server } from 'karma';
 import gulpSequence from 'gulp-sequence';
 import nsp from 'gulp-nsp';
 
