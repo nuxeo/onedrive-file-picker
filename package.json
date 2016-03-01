@@ -1,7 +1,7 @@
 {
   "name": "onedrive-file-picker",
   "description": "JavaScript file picker for OneDrive & OneDrive for Business",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "main": "./src/index.js",
   "author": "Nuxeo (http://www.nuxeo.com/)",
   "contributors": [
