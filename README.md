@@ -13,7 +13,7 @@ Then include jQuery and file picker scripts in your page :
 ```
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="onedrive-file-picker.js"></script>
-<link rel="stylesheet" type="text/css" href="onedrive-file-picker.min.css">
+<link rel="stylesheet" type="text/css" href="onedrive-file-picker.css">
 ```
 
 ### Get your access token
